@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Menu {
-    private Scanner sc = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private Grafo grafo = new Grafo();
     private Centralidade centralidade = new Centralidade(grafo);
 
@@ -10,29 +10,37 @@ public class Menu {
         do {
             System.out.println("Menu:");
             System.out.println("1 - Explicação do projeto");
-            System.out.println("2 - Adicionar autores");
-            System.out.println("3 - Calcular medidas de centralidade BETWEENNESS");
-            System.out.println("4 - Calcular medidas de centralidade CLOSENESS");
-            System.out.println("5 - Calcular medidas de centralidade DEGREE");
+            System.out.println("2 - Adicionar autor");
+            System.out.println("3 - Visualizar autores");
+            System.out.println("4 - Adicionar colaboração");
+            System.out.println("5 - Calcular medidas de centralidade BETWEENNESS");
+            System.out.println("6 - Calcular medidas de centralidade CLOSENESS");
+            System.out.println("7 - Calcular medidas de centralidade DEGREE");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
-            opcao = sc.nextInt();
-            sc.nextLine();
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Consumir nova linha
 
             switch (opcao) {
                 case 1:
                     explicarProjeto();
                     break;
                 case 2:
-                    adicionarAutores();
+                    adicionarAutor();
                     break;
                 case 3:
-                    calcularCentralidadeBetweenness();
+                    visualizarAutores();
                     break;
                 case 4:
-                    calcularCentralidadeCloseness();
+                    adicionarColaboracao();
                     break;
                 case 5:
+                    calcularCentralidadeBetweenness();
+                    break;
+                case 6:
+                    calcularCentralidadeCloseness();
+                    break;
+                case 7:
                     calcularCentralidadeDegree();
                     break;
                 case 0:
@@ -48,20 +56,49 @@ public class Menu {
         System.out.println("Este projeto utiliza grafos para representar uma rede de colaboração entre autores. ...");
     }
 
-    private void adicionarAutores() {
+    private void adicionarAutor() {
+        System.out.print("Nome do autor: ");
+        String nome = scanner.nextLine();
+        Autor autor = new Autor(nome);
+        grafo.adicionarAutor(autor);
+        System.out.println("Autor " + nome + " adicionado.");
+    }
+
+    private void visualizarAutores() {
+        Set<Autor> autores = grafo.getAutores();
+        if (autores.isEmpty()) {
+            System.out.println("Nenhum autor cadastrado.");
+        } else {
+            System.out.println("Autores cadastrados:");
+            for (Autor autor : autores) {
+                System.out.println("- " + autor.getNome());
+            }
+        }
+    }
+
+    private void adicionarColaboracao() {
         System.out.print("Nome do autor 1: ");
-        String nome1 = sc.nextLine();
+        String nome1 = scanner.nextLine();
         System.out.print("Nome do autor 2: ");
-        String nome2 = sc.nextLine();
+        String nome2 = scanner.nextLine();
 
-        Autor autor1 = new Autor(nome1);
-        Autor autor2 = new Autor(nome2);
+        Autor autor1 = null;
+        Autor autor2 = null;
+        for (Autor autor : grafo.getAutores()) {
+            if (autor.getNome().equals(nome1)) {
+                autor1 = autor;
+            }
+            if (autor.getNome().equals(nome2)) {
+                autor2 = autor;
+            }
+        }
 
-        grafo.adicionarAutor(autor1);
-        grafo.adicionarAutor(autor2);
-        grafo.adicionarColaboracao(autor1, autor2);
-
-        System.out.println("Colaboração adicionada entre " + nome1 + " e " + nome2);
+        if (autor1 != null && autor2 != null) {
+            grafo.adicionarColaboracao(autor1, autor2);
+            System.out.println("Colaboração adicionada entre " + nome1 + " e " + nome2);
+        } else {
+            System.out.println("Um ou ambos os autores não foram encontrados.");
+        }
     }
 
     private void calcularCentralidadeBetweenness() {
