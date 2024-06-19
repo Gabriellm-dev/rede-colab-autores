@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
@@ -16,6 +17,7 @@ public class Menu {
             System.out.println("5 - Calcular medidas de centralidade BETWEENNESS");
             System.out.println("6 - Calcular medidas de centralidade CLOSENESS");
             System.out.println("7 - Calcular medidas de centralidade DEGREE");
+            System.out.println("8 - Visualizar rede de colaboração (texto)");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -43,6 +45,9 @@ public class Menu {
                 case 7:
                     calcularCentralidadeDegree();
                     break;
+                case 8:
+                    visualizarRedeColaboracao();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -51,6 +56,25 @@ public class Menu {
             }
         } while (opcao != 0);
     }
+
+    private void visualizarRedeColaboracao() {
+        System.out.println("Rede de Colaboração:");
+        for (Map.Entry<Autor, Set<Autor>> entry : grafo.getAdjList().entrySet()) {
+            Autor autor = entry.getKey();
+            Set<Autor> colaboradores = entry.getValue();
+
+            System.out.print("- " + autor.getNome() + ": ");
+            if (colaboradores.isEmpty()) {
+                System.out.println("Não colabora com ninguém.");
+            } else {
+                List<String> nomesColaboradores = colaboradores.stream()
+                        .map(Autor::getNome)
+                        .collect(Collectors.toList());
+                System.out.println("Colabora com " + String.join(", ", nomesColaboradores));
+            }
+        }
+    }
+
 
     private void explicarProjeto() {
         System.out.println("Este projeto utiliza grafos para representar uma rede de colaboração entre autores. ...");
