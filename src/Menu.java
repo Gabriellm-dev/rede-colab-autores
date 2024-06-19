@@ -8,7 +8,11 @@ public class Menu {
 
     public void exibirMenu() {
         int opcao;
+
         do {
+
+            limparConsole();
+
             System.out.println("Menu:");
             System.out.println("1 - Explicação do projeto");
             System.out.println("2 - Adicionar autor");
@@ -19,9 +23,11 @@ public class Menu {
             System.out.println("7 - Calcular medidas de centralidade DEGREE");
             System.out.println("8 - Visualizar rede de colaboração (texto)");
             System.out.println("0 - Sair");
+            System.out.println("***************************************************");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Consumir nova linha
+            scanner.nextLine();
+            System.out.println("\n");
 
             switch (opcao) {
                 case 1:
@@ -77,8 +83,24 @@ public class Menu {
 
 
     private void explicarProjeto() {
-        System.out.println("Este projeto utiliza grafos para representar uma rede de colaboração entre autores. ...");
+        System.out.println("Este projeto utiliza grafos para representar uma rede de colaboração entre autores.");
+        System.out.println("Cada autor é um vértice no grafo, e cada colaboração entre autores é uma aresta.");
+        System.out.println("O programa permite calcular três medidas de centralidade:");
+        System.out.println("1. Centralidade de Grau (Degree): Mede o número de colaborações diretas que um autor possui.");
+        System.out.println("2. Centralidade de Intermediação (Betweenness): Mede quantas vezes um autor aparece nos caminhos mais curtos entre outros autores.");
+        System.out.println("3. Centralidade de Proximidade (Closeness): Mede quão perto um autor está de todos os outros na rede.");
+        System.out.println("\nOpções do Menu:");
+        System.out.println("1 - Explicação do projeto: Exibe esta explicação do projeto.");
+        System.out.println("2 - Adicionar autor: Permite adicionar um novo autor à rede.");
+        System.out.println("3 - Visualizar autores: Lista todos os autores adicionados à rede.");
+        System.out.println("4 - Adicionar colaboração: Adiciona uma colaboração entre dois autores existentes.");
+        System.out.println("5 - Calcular medidas de centralidade BETWEENNESS: Calcula e exibe a centralidade de intermediação para cada autor.");
+        System.out.println("6 - Calcular medidas de centralidade CLOSENESS: Calcula e exibe a centralidade de proximidade para cada autor.");
+        System.out.println("7 - Calcular medidas de centralidade DEGREE: Calcula e exibe a centralidade de grau para cada autor.");
+        System.out.println("8 - Visualizar rede de colaboração (texto): Exibe a rede de colaboração mostrando quais autores colaboram entre si.");
+        System.out.println("0 - Sair: Encerra o programa.");
     }
+
 
     private void adicionarAutor() {
         System.out.print("Nome do autor: ");
@@ -148,4 +170,10 @@ public class Menu {
             System.out.println(entry.getKey().getNome() + ": " + entry.getValue());
         }
     }
+
+    private void limparConsole() {
+        System.out.println("\n\n\n");
+        System.out.println("***************************************************");
+    }
+
 }
